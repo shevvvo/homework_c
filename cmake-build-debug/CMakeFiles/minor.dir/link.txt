@@ -1,0 +1,2 @@
+/usr/bin/ar qc libminor.a CMakeFiles/minor.dir/project/minor_matrix.c.o
+/usr/bin/ranlib libminor.a

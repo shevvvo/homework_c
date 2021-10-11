@@ -1,0 +1,1 @@
+/usr/bin/cc -g --coverage CMakeFiles/hw1.dir/project/main.c.o -o hw1  libminor.a 
