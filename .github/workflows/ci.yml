@@ -31,7 +31,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: 5d0072c3-4006-4d10-a3b6-9e0a3d7889aa
           file: ./coverage.txt
           flags: unittests 
       
