@@ -50,7 +50,6 @@ TEST(MINOR_TEST, Assert_with_zero_index) {
 TEST(MINOR_TEST, Assert_minor_2) {
     int matrix[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
     int** other_matrix = init_memory(5, 5);
-    int flag = 1;
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
             other_matrix[i][j] = j + 1;

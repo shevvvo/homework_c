@@ -52,21 +52,17 @@ int** finding_minor(int** matrix, size_t rows, size_t cols, size_t index_i, size
         if (i == index_i) {
             flag_i++;
         }
-        flag_j = 0;
         for (size_t j = 0; j < cols; ++j) {
             if (i == index_i && j == index_j) {
                 flag_j++;
-            }
-            else if (i == index_i) {
-
-            }
-            else if (j == index_j) {
+            } else if (i == index_i) {
+            } else if (j == index_j) {
                 flag_j++;
-            }
-            else {
+            } else {
                 new_matrix[i - flag_i][j - flag_j] = matrix[i][j];
             }
         }
+        flag_j = 0;
     }
     return new_matrix;
 }
