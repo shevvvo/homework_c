@@ -2,28 +2,28 @@
 #include <stdlib.h>
 #include "minor_matrix.h"
 
-void free_memory(int** matrix, size_t rows) {
+void free_memory(int **matrix, size_t rows) {
     for (size_t i = 0; i < rows; ++i) {
         free(matrix[i]);
     }
     free(matrix);
 }
 
-int** init_memory(size_t rows, size_t cols) {
+int **init_memory(size_t rows, size_t cols) {
     if (rows == 0 || cols == 0) {
-        printf("Use non-zero arguments");
+        fprintf(stderr, "Use non-zero arguments");
         return NULL;
     }
-    int** new_matrix = (int**) malloc((rows) * sizeof(int*));
+    int **new_matrix = (int **) malloc((rows) * sizeof(int *));
     if (new_matrix == NULL) {
-        printf("Memory error new matrix");
+        fprintf(stderr, "Memory error new matrix");
         free(new_matrix);
         return NULL;
     }
     for (size_t i = 0; i < rows; ++i) {
-        new_matrix[i] = (int*) malloc((cols) * sizeof(int));
+        new_matrix[i] = (int *) malloc((cols) * sizeof(int));
         if (new_matrix[i] == NULL) {
-            printf("Memory error");
+            fprintf(stderr, "Memory error");
             free_memory(new_matrix, i);
             return NULL;
         }
@@ -31,18 +31,20 @@ int** init_memory(size_t rows, size_t cols) {
     return new_matrix;
 }
 
-int** finding_minor(int** matrix, size_t rows, size_t cols, size_t index_i, size_t index_j) {
+int **finding_minor(int **matrix, size_t rows, size_t cols, size_t index_i, size_t index_j) {
     if (cols == 0 || rows == 0) {
-        printf("Try with other arguments\n");
+        fprintf(stderr, "Try with other arguments\n");
         return NULL;
     }
-    if (index_i < 1 || index_j < 1) {
-        printf("Try with other arguments");
+    if (index_i < 1 || index_j < 1 || (index_i - 1) > rows || (index_j - 1) > cols) {
+        fprintf(stderr, "Try with other arguments");
         return NULL;
     }
-    int** new_matrix = init_memory(rows - 1, cols - 1);
+    index_i--;
+    index_j--;
+    int **new_matrix = init_memory(rows - 1, cols - 1);
     if (new_matrix == NULL) {
-        printf("Memory error");
+        fprintf(stderr, "Memory error");
         return NULL;
     }
 
@@ -52,17 +54,19 @@ int** finding_minor(int** matrix, size_t rows, size_t cols, size_t index_i, size
         if (i == index_i) {
             flag_i++;
         }
-        for (size_t j = 0; j < cols; ++j) {
-            if (i == index_i && j == index_j) {
-                flag_j++;
-            } else if (i == index_i) {
-            } else if (j == index_j) {
-                flag_j++;
-            } else {
-                new_matrix[i - flag_i][j - flag_j] = matrix[i][j];
+        if (i != index_i) {
+            for (size_t j = 0; j < cols; ++j) {
+                if (i == index_i && j == index_j) {
+                    flag_j++;
+                } else if (i == index_i) {
+                } else if (j == index_j) {
+                    flag_j++;
+                } else {
+                    new_matrix[i - flag_i][j - flag_j] = matrix[i][j];
+                }
             }
+            flag_j = 0;
         }
-        flag_j = 0;
     }
     return new_matrix;
 }
