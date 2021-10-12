@@ -24,7 +24,7 @@ TEST(MINOR_TEST, Assert_minor_1) {
             flag++;
         }
     }
-    int **result = finding_minor(other_matrix, 3, 3, 2, 2);
+    int **result = finding_minor(other_matrix, 3, 3, 3, 3);
     for (size_t i = 0; i < 2; ++i) {
         for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(result[i][j], matrix[i][j]);
