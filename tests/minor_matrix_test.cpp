@@ -66,6 +66,19 @@ TEST(MINOR_TEST, Assert_minor_2) {
     free_memory(result, 4);
 }
 
+TEST(MINOR_TEST, Assert_boundary) {
+    int matrix[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
+    int **other_matrix = init_memory(5, 5);
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            other_matrix[i][j] = j + 1;
+        }
+    }
+    int **result = finding_minor(other_matrix, 5, 5, 6, 6);
+    EXPECT_EQ(result, nullptr);
+    free_memory(other_matrix, 5);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

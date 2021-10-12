@@ -36,7 +36,7 @@ int **finding_minor(int **matrix, size_t rows, size_t cols, size_t index_i, size
         fprintf(stderr, "Try with other arguments\n");
         return NULL;
     }
-    if (index_i < 1 || index_j < 1 || (index_i - 1) > rows || (index_j - 1) > cols) {
+    if (index_i < 1 || index_j < 1 || index_i > rows || index_j > cols) {
         fprintf(stderr, "Try with other arguments");
         return NULL;
     }
@@ -58,7 +58,6 @@ int **finding_minor(int **matrix, size_t rows, size_t cols, size_t index_i, size
             for (size_t j = 0; j < cols; ++j) {
                 if (i == index_i && j == index_j) {
                     flag_j++;
-                } else if (i == index_i) {
                 } else if (j == index_j) {
                     flag_j++;
                 } else {
