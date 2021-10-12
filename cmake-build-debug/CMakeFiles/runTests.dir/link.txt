@@ -1,1 +1,0 @@
-/usr/bin/c++ -g --coverage CMakeFiles/runTests.dir/tests/minor_matrix_test.cpp.o -o runTests  /usr/lib/x86_64-linux-gnu/libgtest.a libminor.a -lpthread 

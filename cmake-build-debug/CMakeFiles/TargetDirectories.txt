@@ -1,5 +1,0 @@
-/home/she/homework_c/homework_c/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/she/homework_c/homework_c/cmake-build-debug/CMakeFiles/hw1.dir
-/home/she/homework_c/homework_c/cmake-build-debug/CMakeFiles/runTests.dir
-/home/she/homework_c/homework_c/cmake-build-debug/CMakeFiles/minor.dir
-/home/she/homework_c/homework_c/cmake-build-debug/CMakeFiles/edit_cache.dir
