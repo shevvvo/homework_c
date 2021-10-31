@@ -9,6 +9,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Install GTest
+        run: sudo apt-get install libgtest-dev -y 
+
+      - name: Install lcov
+        run: sudo apt install lcov
 
       - name: Build
         run: mkdir build && cd build && cmake .. && make
