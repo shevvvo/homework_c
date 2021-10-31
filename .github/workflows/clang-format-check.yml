@@ -19,9 +19,15 @@ jobs:
       - name: Build
         run: mkdir build && cd build && cmake .. && make
 
-      - name: cppcheck-action
+      - name: cppcheck install
         run: sudo apt update && sudo apt install cppcheck
 
       - name: cppcheck check
         run: cppcheck project tests  --enable=all --error-exitcode=1 -I project/ --suppress=missingIncludeSystem
+        
+      - name: cpplint install
+        run: sudo apt-get install python-pip && sudo pip install cpplint
+        
+      - name: cpplint check
+        run: python2.7 ./linters/cpplint/cpplint.py --extensions=c project/*
       
