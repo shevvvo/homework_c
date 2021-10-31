@@ -23,5 +23,5 @@ jobs:
         run: sudo apt update && sudo apt install cppcheck
 
       - name: cppcheck check
-        run: cppcheck ./project
+        run: cppcheck project tests  --enable=all --error-exitcode=1 -I project/ --suppress=missingIncludeSystem
       
