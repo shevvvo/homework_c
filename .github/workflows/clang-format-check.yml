@@ -23,5 +23,5 @@ jobs:
         run: sudo apt update && sudo apt install cppcheck
 
       - name: cppcheck check
-        run: cppcheck ./src
+        run: cppcheck ./project
       

@@ -18,7 +18,7 @@ int main() {
     }
 
     printf("Insert matrix coeffs: \n");
-    for (size_t i = 0; i < rows; ++i) {
+    for (siz_t i = 0; i < rows; ++i) {
         for (size_t j = 0; j < cols; ++j) {
             if (scanf("%d", &matrix[i][j]) != 1) {
                 fprintf(stderr, "Entry error");
@@ -55,8 +55,8 @@ int main() {
         printf("\n");
     }
 
-    free_memory(matrix, rows);
-    free_memory(new_matrix, rows - 1);
+    //free_memory(matrix, rows);
+    //free_memory(new_matrix, rows - 1);
 
     return 0;
 }
