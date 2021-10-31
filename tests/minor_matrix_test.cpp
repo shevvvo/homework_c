@@ -67,7 +67,7 @@ TEST(MINOR_TEST, Assert_minor_2) {
 }
 
 TEST(MINOR_TEST, Assert_boundary) {
-    int matrix[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
+    //int matrix[4][4] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4};
     int **other_matrix = init_memory(5, 5);
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
