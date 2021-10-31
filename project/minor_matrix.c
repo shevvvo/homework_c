@@ -9,6 +9,13 @@ void free_memory(int **matrix, size_t rows) {
     free(matrix);
 }
 
+
+
+
+
+
+
+
 int **init_memory(size_t rows, size_t cols) {
     if (rows == 0 || cols == 0) {
         fprintf(stderr, "Use non-zero arguments");
@@ -69,3 +76,12 @@ int **finding_minor(int **matrix, size_t rows, size_t cols, size_t index_i, size
     }
     return new_matrix;
 }
+
+
+
+
+
+
+
+
+
