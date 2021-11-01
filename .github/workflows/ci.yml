@@ -1,0 +1,45 @@
+name: build
+on: [push]
+
+jobs:
+  build:
+
+    name: ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Install GTest
+        run: sudo apt-get install libgtest-dev -y 
+
+      - name: Install lcov
+        run: sudo apt install lcov
+
+      - name: Build
+        run: mkdir build && cd build && cmake .. && make
+
+      - name: cppcheck install
+        run: sudo apt update && sudo apt install cppcheck
+
+      - name: cppcheck check
+        run: cppcheck project tests  --enable=all --error-exitcode=1 -I project/ --suppress=missingIncludeSystem
+        
+      - name: cpplint install
+        run: sudo apt-get install python3-pip && sudo pip install cpplint
+        
+      - name: cpplint check
+        run: python2.7 ./linters/cpplint/cpplint.py --extensions=c project/*
+      
+      - name: run tests
+        run: mkdir test_build && cd test_build && cmake .. && make test_input && make test_static && make test_dynamic && ./test_input && ./test_dynamic && ./test_static && lcov -t "hw-c" -o hw-c.info -c -d . && genhtml -o report hw-c.info
+        
+      - name: Install Valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+       
+      - name: Valgrind check
+        run: mkdir valgrind_check && cd valgrind_check && cmake .. && make test_input && make test_static && make test_dynamic && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_input && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_static && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_dynamic
+      - name: coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: test_build/report
