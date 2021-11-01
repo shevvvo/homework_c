@@ -31,7 +31,7 @@ void* main_func(void* arg) {
     }
     if (good > bad) {
         bad_or_good = 1;
-    } else if (bad == good){
+    } else if (bad == good) {
         bad_or_good = 0;
     } else {
         bad_or_good = -1;
@@ -69,10 +69,7 @@ int start_work(const char filename[]) {
         fprintf(stderr, "Memory error\n");
         return MEMORY_ERROR;
     }
-    //main_data->data = (char*) malloc(size);
     main_data->data = mass;
-
-    //main_data->data = mass;
     main_data->end = size;
     main_func(main_data);
     if (bad_or_good == -2) {
