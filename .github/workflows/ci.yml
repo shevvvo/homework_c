@@ -17,7 +17,7 @@ jobs:
         run: sudo apt install lcov
 
       - name: Build
-        run: mkdir build && cd build && cmake .. && make
+        run: mkdir build && cd build && cmake .. && make && cd ..
 
       - name: cppcheck install
         run: sudo apt update && sudo apt install cppcheck
@@ -32,7 +32,7 @@ jobs:
         run: python2.7 ./linters/cpplint/cpplint.py --extensions=c src/* include/* 
       
       - name: run tests
-        run: mkdir test_build && cd test_build && cmake .. && make test_input && make test_static && make test_dynamic && ./test_input && ./test_static && ./test_dynamic && lcov -t "hw-c" -o hw-c.info -c -d . && genhtml -o report hw-c.info
+        run: mkdir test_build && cd test_build && cmake .. && make test_input && make test_static && make test_dynamic && ./test_input && ./test_static && ./test_dynamic && lcov -t "hw-c" -o hw-c.info -c -d . && genhtml -o report hw-c.info && cd ..
         
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
