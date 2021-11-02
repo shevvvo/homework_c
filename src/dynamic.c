@@ -7,29 +7,38 @@
 
 static long good = 0;
 static long bad = 0;
-static int flag = 0;
 pthread_mutex_t mutex;
 
 void *main_func(void *arg) {
     file_data *data = (file_data *) arg;
-    for (long i = 0; i < data->end; ++i) {
-        if (flag == 1) {
+    long local_flag = 0;
+    for (long i = 0; i < data->end - 1; ++i) {
+        if ((data->data[i] == ')' || data->data[i] == '(') && i == 0) {
+            continue;
+        } else if (data->data[i] == ':' && i == data->end - 2) {
+            if (data->data[i + 1] == ')') {
+                pthread_mutex_lock(&mutex);
+                good++;
+                pthread_mutex_unlock(&mutex);
+            } else if (data->data[i + 1] == '(') {
+                pthread_mutex_lock(&mutex);
+                bad++;
+                pthread_mutex_unlock(&mutex);
+            }
+        } else if (data->data[i] == ':') {
+            local_flag = 1;
+        } else if (local_flag == 1) {
             if (data->data[i] == ')') {
                 pthread_mutex_lock(&mutex);
                 good++;
-                flag = 0;
                 pthread_mutex_unlock(&mutex);
+                local_flag = 0;
             } else if (data->data[i] == '(') {
                 pthread_mutex_lock(&mutex);
                 bad++;
-                flag = 0;
                 pthread_mutex_unlock(&mutex);
+                local_flag = 0;
             }
-        }
-        if (data->data[i] == ':') {
-            pthread_mutex_lock(&mutex);
-            flag = 1;
-            pthread_mutex_unlock(&mutex);
         }
     }
     return NULL;
@@ -100,9 +109,9 @@ int start_work(const char filename[]) {
 
 
     for (long i = 0; i < ncpus; ++i) {
-        data_for_thread[i].data = (char *) malloc(sizeof(char) * thread_data_size);
+        data_for_thread[i].data = (char *) malloc(sizeof(char) * (thread_data_size + 1));
         if (data_for_thread[i].data == NULL) {
-            for (int j = 0; j < i; ++j) {
+            for (long j = 0; j < i; ++j) {
                 free(data_for_thread[i].data);
             }
             free(data_for_thread);
@@ -116,25 +125,28 @@ int start_work(const char filename[]) {
     long start = 0;
     long end = thread_data_size;
     long delta = thread_data_size * ncpus - size;
+    printf("\n");
     for (long i = 0; i < ncpus; ++i) {
-        /*printf("START FOR %ld: %ld\n", i, start);
-        printf("END FOR %ld: %ld\n", i, end);*/
-        for (long j = start; j < end; ++j) {
+        if (i != ncpus - 1) {
+            end++;
+        }
+        for (long j = start; j < end && j < size; ++j) {
             data_for_thread[i].data[j - start] = mass[j];
         }
         if (i == ncpus - 1 && size % ncpus != 0) {
-            data_for_thread[i].end = delta;
+            data_for_thread[i].end = thread_data_size - delta;
         } else {
-            data_for_thread[i].end = thread_data_size;
+            data_for_thread[i].end = thread_data_size + 1;
         }
-        start = end;
+        start += thread_data_size;
         if (size % ncpus != 0 && i == ncpus - 2) {
-            end += delta;
+            end += thread_data_size - delta;
         } else {
             end += thread_data_size;
+            end--;
         }
         if (pthread_create(&(threads[i]), NULL, main_func, &data_for_thread[i]) != 0) {
-            for (int j = 0; j < ncpus; ++j) {
+            for (long j = 0; j < ncpus; ++j) {
                 free(data_for_thread[j].data);
             }
             free(data_for_thread);
@@ -145,16 +157,14 @@ int start_work(const char filename[]) {
             return THREAD_ERROR;
         }
     }
-
     for (long i = 0; i < ncpus; ++i) {
         pthread_join(threads[i], NULL);
     }
 
     free(threads);
-    for (int i = 0; i < ncpus; ++i) {
+    for (long i = 0; i < ncpus; ++i) {
         free(data_for_thread[i].data);
     }
-
     free(data_for_thread);
     fclose(file);
     free(mass);
