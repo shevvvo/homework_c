@@ -30,15 +30,18 @@ jobs:
         
       - name: cpplint check
         run: python2.7 ./linters/cpplint/cpplint.py --extensions=c src/* include/* 
+        
+      - name: data generate
+        run: cd data && python3 data.py && cd ..
       
       - name: run tests
-        run: mkdir test_build && cd test_build && cmake .. && make test_input && make test_static && make test_dynamic && ./test_input && ./test_static && ./test_dynamic && lcov -t "hw-c" -o hw-c.info -c -d . && genhtml -o report hw-c.info && cd ..
+        run: mkdir test_build && cd test_build && cmake .. && make && make test && lcov -t "hw-c" -o hw-c.info -c -d . && lcov --remove hw-c.info "/usr/include/*" "./include/*" "/usr/local/*" > coverage.info && genhtml -o report coverage.info
         
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
        
       - name: Valgrind check
-        run: mkdir valgrind_check && cd valgrind_check && cmake .. && make test_input && make test_static && make test_dynamic && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_input && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_static && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q ./test_dynamic
+        run: mkdir valgrind_check && cd valgrind_check && cmake .. && make && valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all -s -q make test
       - name: coverage
         uses: actions/upload-artifact@v2
         with:

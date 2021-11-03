@@ -8,11 +8,10 @@
 
 typedef struct {
     long end;
+    long res;
     char *data;
 } file_data;
 
-int start_work(const char filename[]);
-
-void* main_func(void* arg);
+int pre_working_initialize(char* file_data, long size);
 
 #endif  // INCLUDE_FUNCTIONS_H_

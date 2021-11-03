@@ -20,8 +20,15 @@ target_link_libraries(dynamic PUBLIC input)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+find_package(GTest REQUIRED)
 
 add_executable(hw_c src/main.c)
+
+add_executable(test_dynamic tests/lib_test.cpp)
+target_link_libraries(test_dynamic GTest::gtest dynamic input gcov)
+
+add_executable(test_static tests/lib_test.cpp)
+target_link_libraries(test_static GTest::gtest static_work input gcov)
 
 if(dynamic)
     message("dynamic")
@@ -31,13 +38,18 @@ else()
     target_link_libraries(hw_c static_work gcov)
 endif(dynamic)
 
-find_package(GTest REQUIRED)
 
 add_executable(test_input tests/input_test.cpp)
 target_link_libraries(test_input GTest::gtest input gcov)
 
-add_executable(test_static tests/static_test.cpp)
-target_link_libraries(test_static GTest::gtest static_work input gcov)
+enable_testing()
 
-add_executable(test_dynamic tests/dynamic_test.cpp)
-target_link_libraries(test_dynamic GTest::gtest dynamic input gcov)
+#add_test(NAME test_input
+#        COMMAND test_input
+#        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+add_test(NAME test_static
+         COMMAND test_static
+         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+#add_test(NAME test_dynamic
+#         COMMAND test_dynamic
+#         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)

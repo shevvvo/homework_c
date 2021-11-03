@@ -2,79 +2,69 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+
 #include "functions.h"
 #include "input.h"
 
-static long good = 0;
-static long bad = 0;
-pthread_mutex_t mutex;
+#define GOOD 1
+#define BAD -1
+#define NORMAL 0
 
-void *main_func(void *arg) {
+void *algorithm_for_massive(void *arg) {
     file_data *data = (file_data *) arg;
+    if (data == NULL) {
+        return NULL;
+    }
+    data->res = 0;
     long local_flag = 0;
+    int bad = 0;
+    int good = 0;
     for (long i = 0; i < data->end - 1; ++i) {
         if ((data->data[i] == ')' || data->data[i] == '(') && i == 0) {
             continue;
         } else if (data->data[i] == ':' && i == data->end - 2) {
             if (data->data[i + 1] == ')') {
-                pthread_mutex_lock(&mutex);
                 good++;
-                pthread_mutex_unlock(&mutex);
             } else if (data->data[i + 1] == '(') {
-                pthread_mutex_lock(&mutex);
-                bad++;
-                pthread_mutex_unlock(&mutex);
+                bad--;
             }
         } else if (data->data[i] == ':') {
             local_flag = 1;
         } else if (local_flag == 1) {
             if (data->data[i] == ')') {
-                pthread_mutex_lock(&mutex);
                 good++;
-                pthread_mutex_unlock(&mutex);
                 local_flag = 0;
             } else if (data->data[i] == '(') {
-                pthread_mutex_lock(&mutex);
-                bad++;
-                pthread_mutex_unlock(&mutex);
+                bad--;
                 local_flag = 0;
             }
         }
     }
+    data->res = bad + good;
     return NULL;
 }
 
-int start_work(const char filename[]) {
-    bad = 0;
-    good = 0;
-    if (filename == 0) {
-        printf("Filename error\n");
-        return FILE_ERROR;
-    }
+int pre_working_initialize(char* file_mass, long size) {
+    //bad = 0;
+    //good = 0;
     long ncpus = sysconf(_SC_NPROCESSORS_CONF);
     if (ncpus == -1) {
-        printf("CPUs error\n");
+        fprintf(stderr, "CPUs error\n");
+        free(file_mass);
         return CPU_ERROR;
     }
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("File error\n");
-        return FILE_ERROR;
-    }
-    long size = init_file_size(filename);
     if (size == 0) {
-        fclose(file);
-        printf("Size error\n");
+        fprintf(stderr, "Size error\n");
+        free(file_mass);
         return FILE_ERROR;
     }
     size--;
     if (size < ncpus) {
         ncpus = size;
     }
-    char *mass = init_massive_from_file(size, filename);
-    if (mass == NULL) {
-        fclose(file);
-        printf("Memory error\n");
+    if (file_mass == NULL) {
+        fprintf(stderr, "Memory error\n");
+        free(file_mass);
         return MEMORY_ERROR;
     }
     long thread_data_size;
@@ -92,49 +82,47 @@ int start_work(const char filename[]) {
     }
     pthread_t *threads = (pthread_t *) malloc(ncpus * sizeof(pthread_t));
     if (threads == NULL) {
-        free(mass);
-        fclose(file);
-        printf("Memory error\n");
+        fprintf(stderr, "Memory error\n");
+        free(file_mass);
         return MEMORY_ERROR;
     }
 
     file_data *data_for_thread = (file_data *) malloc(ncpus * sizeof(file_data));
     if (data_for_thread == NULL) {
-        free(mass);
         free(threads);
-        fclose(file);
-        printf("Memory error\n");
+        free(file_mass);
+        fprintf(stderr, "Memory error\n");
         return MEMORY_ERROR;
     }
 
 
     for (long i = 0; i < ncpus; ++i) {
-        data_for_thread[i].data = (char *) malloc(sizeof(char) * (thread_data_size + 1));
+        data_for_thread[i].data = (char *) malloc(sizeof(char) * (thread_data_size + 2));
         if (data_for_thread[i].data == NULL) {
             for (long j = 0; j < i; ++j) {
                 free(data_for_thread[i].data);
             }
             free(data_for_thread);
-            free(mass);
             free(threads);
-            fclose(file);
-            printf("Memory error\n");
+            free(file_mass);
+            fprintf(stderr, "Memory error\n");
             return MEMORY_ERROR;
         }
     }
     long start = 0;
-    long end = thread_data_size;
+    long end = thread_data_size + 1;
     long delta = thread_data_size * ncpus - size;
-    printf("\n");
     for (long i = 0; i < ncpus; ++i) {
         if (i != ncpus - 1) {
             end++;
         }
         for (long j = start; j < end && j < size; ++j) {
-            data_for_thread[i].data[j - start] = mass[j];
+            data_for_thread[i].data[j - start] = file_mass[j];
         }
         if (i == ncpus - 1 && size % ncpus != 0) {
             data_for_thread[i].end = thread_data_size - delta;
+        } else if (i == ncpus - 1) {
+            data_for_thread[i].end = thread_data_size;
         } else {
             data_for_thread[i].end = thread_data_size + 1;
         }
@@ -145,34 +133,33 @@ int start_work(const char filename[]) {
             end += thread_data_size;
             end--;
         }
-        if (pthread_create(&(threads[i]), NULL, main_func, &data_for_thread[i]) != 0) {
+        if (pthread_create(&(threads[i]), NULL, algorithm_for_massive, &data_for_thread[i]) != 0) {
             for (long j = 0; j < ncpus; ++j) {
                 free(data_for_thread[j].data);
             }
             free(data_for_thread);
-            free(mass);
+            free(file_mass);
             free(threads);
-            fclose(file);
-            printf("Thread error\n");
+            fprintf(stderr, "Thread error\n");
             return THREAD_ERROR;
         }
     }
+    long result = 0;
     for (long i = 0; i < ncpus; ++i) {
         pthread_join(threads[i], NULL);
+        result += data_for_thread[i].res;
     }
-
+    free(file_mass);
     free(threads);
     for (long i = 0; i < ncpus; ++i) {
         free(data_for_thread[i].data);
     }
     free(data_for_thread);
-    fclose(file);
-    free(mass);
-    if (good > bad) {
-        return 1;
-    } else if (bad == good) {
-        return 0;
+    if (result > 0) {
+        return GOOD;
+    } else if (result == 0) {
+        return NORMAL;
     } else {
-        return -1;
+        return BAD;
     }
 }

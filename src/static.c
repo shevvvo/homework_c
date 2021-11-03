@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "functions.h"
 #include "input.h"
 
 int bad_or_good = -2;
 
-void* main_func(void* arg) {
+void* algorithm_for_massive(void* arg) {
     file_data* mass = (file_data*)arg;
     if (mass == NULL) {
         bad_or_good = -2;
@@ -40,45 +41,31 @@ void* main_func(void* arg) {
     return NULL;
 }
 
-int start_work(const char filename[]) {
-    if (filename == 0) {
-        fprintf(stderr, "Filename error\n");
-        return FILE_ERROR;
-    }
-    FILE* file = fopen(filename, "r");
-    if (file == NULL) {
-        fprintf(stderr, "File error\n");
-        return FILE_ERROR;
-    }
-    long size = init_file_size(filename);
+int pre_working_initialize(char* file_mass, long size) {
     if (size == 0) {
-        fclose(file);
+        free(file_mass);
         fprintf(stderr, "Size of file is 0\n");
         return FILE_ERROR;
     }
-    char* mass = init_massive_from_file(size, filename);
-    if (mass == NULL) {
-        fclose(file);
+    if (file_mass == NULL) {
+        free(file_mass);
         fprintf(stderr, "Memory error\n");
         return MEMORY_ERROR;
     }
     file_data* main_data = (file_data*)malloc(sizeof(file_data));
     if (main_data == NULL) {
-        fclose(file);
-        free(mass);
+        free(file_mass);
         fprintf(stderr, "Memory error\n");
         return MEMORY_ERROR;
     }
-    main_data->data = mass;
+    main_data->data = file_mass;
     main_data->end = size;
-    main_func(main_data);
+    algorithm_for_massive(main_data);
     if (bad_or_good == -2) {
-        fclose(file);
         free(main_data->data);
         free(main_data);
         return MEMORY_ERROR;
     }
-    fclose(file);
     free(main_data->data);
     free(main_data);
     return bad_or_good;
