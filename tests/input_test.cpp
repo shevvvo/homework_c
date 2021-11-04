@@ -5,7 +5,7 @@ extern "C" {
 }
 
 TEST(INPUT_TEST, file1) { EXPECT_TRUE(init_file_size("no file") == 0); }
-/*
+
 TEST(INPUT_TEST, file2) {
     EXPECT_EQ(init_file_size("1.txt"), 52);
 }
@@ -34,7 +34,7 @@ TEST(INPUT_TEST, file_data) {
         EXPECT_EQ(file_data[i], data[i]);
     }
     free(file_data);
-}*/
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
