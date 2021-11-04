@@ -29,13 +29,31 @@ jobs:
         run: sudo apt-get install python
         
       - name: cpplint check
-        run: python2.7 ./linters/cpplint/cpplint.py --extensions=c src/* include/* 
+        run: python2.7 ./linters/cpplint/cpplint.py --extensions=c src/* include/*
+        
+      - name: clang-tidy install
+        run: sudo apt install clang-tidy
+        
+      - name: clang-tidy check
+        run: clang-tidy src/* -- -Iinclude/ -DMY_DEFINES ...
+        
+      - name: clang-format install
+        run: sudo apt-get install clang-format
+        
+      - name: clang-format check
+        run: clang-format -i src/*.c && clang-format -i include/*.h && clang-format -i tests/*.cpp
+        
+      - name: install scan-build
+        run: sudo apt install clang-tools
         
       - name: data generate
         run: cd data && python3 data.py && cd ..
       
-      - name: run tests
-        run: mkdir test_build && cd test_build && cmake .. && make && make test && lcov -t "hw-c" -o hw-c.info -c -d . && lcov --remove hw-c.info "/usr/include/*" "./include/*" "/usr/local/*" > coverage.info && genhtml -o report coverage.info
+      - name: run tests with scan-build
+        run: mkdir test_build && cd test_build && scan-build cmake .. && scan-build make && scan-build make test && lcov -t "hw-c" -o hw-c.info -c -d . && lcov --remove hw-c.info "/usr/include/*" "./include/*" "/usr/local/*" > coverage.info && genhtml -o report coverage.info
+        
+      #- name: install fninfer
+      #  run: sudo apt-get install opam && git clone https://github.com/facebook/infer.git && ./build-infer.sh clang && sudo make install
         
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind

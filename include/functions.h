@@ -14,4 +14,4 @@ typedef struct {
 
 int pre_working_initialize(char *file_data, long size);
 
-#endif // INCLUDE_FUNCTIONS_H_
+#endif  // INCLUDE_FUNCTIONS_H_
