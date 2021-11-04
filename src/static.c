@@ -5,6 +5,8 @@
 #include "functions.h"
 #include "input.h"
 
+#define PRINT_ERROR 111
+
 int bad_or_good = -2;
 
 void *algorithm_for_massive(void *arg) {
@@ -45,18 +47,24 @@ void *algorithm_for_massive(void *arg) {
 int pre_working_initialize(char *file_mass, long size) {
   if (size == 0) {
     free(file_mass);
-    fprintf(stderr, "Size of file is 0\n");
+    if (fprintf(stderr, "Size of file is 0\n") != 1) {
+        return PRINT_ERROR;
+    }
     return FILE_ERROR;
   }
   if (file_mass == NULL) {
     free(file_mass);
-    fprintf(stderr, "Memory error\n");
+    if (fprintf(stderr, "Memory error\n") != 1) {
+        return PRINT_ERROR;
+    }
     return MEMORY_ERROR;
   }
   file_data *main_data = (file_data *)malloc(sizeof(file_data));
   if (main_data == NULL) {
     free(file_mass);
-    fprintf(stderr, "Memory error\n");
+    if (fprintf(stderr, "Memory error\n") != 1) {
+        return PRINT_ERROR;
+    }
     return MEMORY_ERROR;
   }
   main_data->data = file_mass;

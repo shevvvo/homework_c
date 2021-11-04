@@ -12,9 +12,6 @@
 
 void *algorithm_for_massive(void *arg) {
   file_data *data = (file_data *)arg;
-  if (data == NULL) {
-    return NULL;
-  }
   data->res = 0;
   long local_flag = 0;
   int bad = 0;
