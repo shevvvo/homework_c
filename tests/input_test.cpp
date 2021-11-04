@@ -4,9 +4,7 @@ extern "C" {
 #include "input.h"
 }
 
-TEST(INPUT_TEST, file1) {
-    EXPECT_TRUE(init_file_size("no file") == 0);
-}
+TEST(INPUT_TEST, file1) { EXPECT_TRUE(init_file_size("no file") == 0); }
 /*
 TEST(INPUT_TEST, file2) {
     EXPECT_EQ(init_file_size("1.txt"), 52);
@@ -38,7 +36,7 @@ TEST(INPUT_TEST, file_data) {
     free(file_data);
 }*/
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }

@@ -7,11 +7,11 @@
 #define THREAD_ERROR 121
 
 typedef struct {
-    long end;
-    long res;
-    char *data;
+  long end;
+  long res;
+  char *data;
 } file_data;
 
-int pre_working_initialize(char* file_data, long size);
+int pre_working_initialize(char *file_data, long size);
 
-#endif  // INCLUDE_FUNCTIONS_H_
+#endif // INCLUDE_FUNCTIONS_H_
