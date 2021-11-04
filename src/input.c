@@ -21,7 +21,7 @@ long init_file_size(const char filename[]) {
 }
 
 char *init_massive_from_file(long size, const char filename[]) {
-    char *data = (char *) malloc(sizeof(char) * size);
+    char *data = (char *) calloc(size, sizeof(char));
     if (data == NULL) {
         fprintf(stderr, "Memory error\n");
         return NULL;
@@ -32,7 +32,7 @@ char *init_massive_from_file(long size, const char filename[]) {
         fprintf(stderr, "File error\n");
         return NULL;
     }
-    char* buf =(char*)malloc(sizeof(char) * 120);
+    char* buf =(char*)calloc(120, sizeof(char));
     int i = 0;
     while (fgets(buf, 120, file) != NULL) {
         int j = 0;

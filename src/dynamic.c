@@ -45,8 +45,6 @@ void *algorithm_for_massive(void *arg) {
 }
 
 int pre_working_initialize(char* file_mass, long size) {
-    //bad = 0;
-    //good = 0;
     long ncpus = sysconf(_SC_NPROCESSORS_CONF);
     if (ncpus == -1) {
         fprintf(stderr, "CPUs error\n");
@@ -97,7 +95,7 @@ int pre_working_initialize(char* file_mass, long size) {
 
 
     for (long i = 0; i < ncpus; ++i) {
-        data_for_thread[i].data = (char *) malloc(sizeof(char) * (thread_data_size + 2));
+        data_for_thread[i].data = (char *) calloc((thread_data_size + 2), sizeof(char));
         if (data_for_thread[i].data == NULL) {
             for (long j = 0; j < i; ++j) {
                 free(data_for_thread[i].data);

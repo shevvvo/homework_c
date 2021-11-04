@@ -44,12 +44,12 @@ target_link_libraries(test_input GTest::gtest input gcov)
 
 enable_testing()
 
-#add_test(NAME test_input
-#        COMMAND test_input
-#        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
-add_test(NAME test_static
-         COMMAND test_static
-         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+add_test(NAME test_input
+        COMMAND test_input
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+#add_test(NAME test_static
+#         COMMAND test_static
+#         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
 #add_test(NAME test_dynamic
 #         COMMAND test_dynamic
 #         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)

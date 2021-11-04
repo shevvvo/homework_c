@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "functions.h"
 #include "input.h"
@@ -62,11 +63,11 @@ int pre_working_initialize(char* file_mass, long size) {
     main_data->end = size;
     algorithm_for_massive(main_data);
     if (bad_or_good == -2) {
-        free(main_data->data);
+        free(file_mass);
         free(main_data);
         return MEMORY_ERROR;
     }
-    free(main_data->data);
+    free(file_mass);
     free(main_data);
     return bad_or_good;
 }
