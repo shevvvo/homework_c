@@ -12,7 +12,7 @@ TEST(LIB_TEST, wrong_filename) {
   free(mass);
 }
 
-TEST(LIB_TEST, zero_size) {
+TEST(LIB_TEST, test) {
   long size = init_file_size("1.txt");
   char *mass = init_massive_from_file(size, "1.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
