@@ -10,11 +10,10 @@
 #define BAD -1
 #define NORMAL 0
 
-pthread_mutex_t mutex;
 
 void *algorithm_for_massive(void *arg) {
     file_data *data = (file_data *) arg;
-    data->res = 0;/*
+    data->res = 0;
     long local_flag = 0;
     long bad = 0;
     long good = 0;
@@ -39,7 +38,7 @@ void *algorithm_for_massive(void *arg) {
             }
         }
     }
-    data->res = bad + good;*/
+    data->res = bad + good;
     return NULL;
 }
 
