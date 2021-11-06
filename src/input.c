@@ -33,6 +33,12 @@ char *init_massive_from_file(long size, const char filename[]) {
     return NULL;
   }
   char *buf = (char *)calloc(120, sizeof(char));
+  if (buf == NULL) {
+    fclose(file);
+    free(data);
+    fprintf(stderr, "Memory error");
+    return NULL;
+  }
   int i = 0;
   while (fgets(buf, 120, file) != NULL) {
     int j = 0;

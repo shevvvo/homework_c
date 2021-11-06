@@ -52,8 +52,11 @@ jobs:
       - name: run tests with scan-build
         run: mkdir test_build && cd test_build && scan-build cmake .. && scan-build make && scan-build make test && lcov -t "hw-c" -o hw-c.info -c -d . && lcov --remove hw-c.info "/usr/include/*" "./include/*" "/usr/local/*" > coverage.info && genhtml -o report coverage.info
         
-      #- name: install fninfer
-      #  run: sudo apt-get install opam && git clone https://github.com/facebook/infer.git && ./build-infer.sh clang && sudo make install
+      - name: install fbinfer
+        run: sudo apt-get install opam && git clone https://github.com/facebook/infer.git && cd infer && ./build-infer.sh -y clang && sudo make install && cd ..
+        
+      - name: run with fbinfer
+        run: mkdir infer_build && cd infer_build && infer run -- make test
         
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind

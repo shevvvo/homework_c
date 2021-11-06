@@ -45,12 +45,10 @@ int pre_working_initialize(char *file_mass, long size) {
   long ncpus = sysconf(_SC_NPROCESSORS_CONF);
   if (ncpus == -1) {
     fprintf(stderr, "CPUs error\n");
-    free(file_mass);
     return CPU_ERROR;
   }
   if (size == 0) {
     fprintf(stderr, "Size error\n");
-    free(file_mass);
     return FILE_ERROR;
   }
   size--;
@@ -59,7 +57,6 @@ int pre_working_initialize(char *file_mass, long size) {
   }
   if (file_mass == NULL) {
     fprintf(stderr, "Memory error\n");
-    free(file_mass);
     return MEMORY_ERROR;
   }
   long thread_data_size;
@@ -78,14 +75,12 @@ int pre_working_initialize(char *file_mass, long size) {
   pthread_t *threads = (pthread_t *)malloc(ncpus * sizeof(pthread_t));
   if (threads == NULL) {
     fprintf(stderr, "Memory error\n");
-    free(file_mass);
     return MEMORY_ERROR;
   }
 
   file_data *data_for_thread = (file_data *)malloc(ncpus * sizeof(file_data));
   if (data_for_thread == NULL) {
     free(threads);
-    free(file_mass);
     fprintf(stderr, "Memory error\n");
     return MEMORY_ERROR;
   }
@@ -99,7 +94,6 @@ int pre_working_initialize(char *file_mass, long size) {
       }
       free(data_for_thread);
       free(threads);
-      free(file_mass);
       fprintf(stderr, "Memory error\n");
       return MEMORY_ERROR;
     }
@@ -134,7 +128,6 @@ int pre_working_initialize(char *file_mass, long size) {
         free(data_for_thread[j].data);
       }
       free(data_for_thread);
-      free(file_mass);
       free(threads);
       fprintf(stderr, "Thread error\n");
       return THREAD_ERROR;
@@ -145,7 +138,6 @@ int pre_working_initialize(char *file_mass, long size) {
     pthread_join(threads[i], NULL);
     result += data_for_thread[i].res;
   }
-  free(file_mass);
   free(threads);
   for (long i = 0; i < ncpus; ++i) {
     free(data_for_thread[i].data);

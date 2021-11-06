@@ -34,6 +34,7 @@ int main(int argc, const char **argv) {
   } else if (res == -1) {
     printf("Bad\n");
   }
+  free(file_mass);
   clock_gettime(CLOCK_MONOTONIC, &finish);
   printf("Time: %ld\n", finish.tv_sec - start.tv_sec);
   return SUCCESS;
