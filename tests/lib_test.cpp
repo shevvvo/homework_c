@@ -12,44 +12,45 @@ TEST(LIB_TEST, wrong_filename) {
   free(mass);
 }
 
+
 TEST(LIB_TEST, test) {
-  long size = init_file_size("1.txt");
-  char *mass = init_massive_from_file(size, "1.txt");
+  long size = init_file_size("../data/1.txt");
+  char *mass = init_massive_from_file(size, "../data/1.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
-  printf("Hi\n");
+    free(mass);
 }
 
 TEST(LIB_TEST, test1) {
-  long size = init_file_size("2.txt");
-  char *mass = init_massive_from_file(size, "2.txt");
+  long size = init_file_size("../data/2.txt");
+  char *mass = init_massive_from_file(size, "../data/2.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
   free(mass);
 }
 
 TEST(LIB_TEST, test2) {
-  long size = init_file_size("3.txt");
-  char *mass = init_massive_from_file(size, "3.txt");
+  long size = init_file_size("../data/3.txt");
+  char *mass = init_massive_from_file(size, "../data/3.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
   free(mass);
 }
 
 TEST(LIB_TEST, test3) {
-  long size = init_file_size("4.txt");
-  char *mass = init_massive_from_file(size, "4.txt");
+  long size = init_file_size("../data/4.txt");
+  char *mass = init_massive_from_file(size, "../data/4.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
   free(mass);
 }
 
 TEST(LIB_TEST, test4) {
-  long size = init_file_size("5.txt");
-  char *mass = init_massive_from_file(size, "5.txt");
+  long size = init_file_size("../data/5.txt");
+  char *mass = init_massive_from_file(size, "../data/5.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), 1);
   free(mass);
 }
 
 TEST(LIB_TEST, test5) {
-  long size = init_file_size("6.txt");
-  char *mass = init_massive_from_file(size, "6.txt");
+  long size = init_file_size("../data/6.txt");
+  char *mass = init_massive_from_file(size, "../data/6.txt");
   EXPECT_EQ(pre_working_initialize(mass, size), -1);
   free(mass);
 }

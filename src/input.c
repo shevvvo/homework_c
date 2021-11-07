@@ -21,7 +21,7 @@ long init_file_size(const char filename[]) {
 }
 
 char *init_massive_from_file(long size, const char filename[]) {
-  char *data = (char *)calloc(size, sizeof(char));
+  char *data = (char *)malloc(size * sizeof(char));
   if (data == NULL) {
     fprintf(stderr, "Memory error\n");
     return NULL;
