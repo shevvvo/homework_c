@@ -48,15 +48,27 @@ jobs:
         
       - name: data generate
         run: cd data && python3 data.py && cd ..
+        
+      - name: run tests with address sanitizer
+        run: mkdir add_build && cd add_build && cmake -Daddress=ON .. && make && make test
+        
+      - name: run tests with memory sanitizer
+        run: mkdir mem_build && cd mem_build && cmake -Dmemory=ON .. && make && make test
+        
+      - name: run tests with undefined sanitizer
+        run: mkdir und_build && cd und_build && cmake -Dundefined=ON .. && make && make test
+           
+      - name: run tests with thread sanitizer
+        run: mkdir thr_build && cd thr_build && cmake -Dthread=ON .. && make && make test
       
       - name: run tests with scan-build
         run: mkdir test_build && cd test_build && scan-build cmake .. && scan-build make && scan-build make test && lcov -t "hw-c" -o hw-c.info -c -d . && lcov --remove hw-c.info "/usr/include/*" "./include/*" "/usr/local/*" > coverage.info && genhtml -o report coverage.info
         
-      #- name: install fbinfer
-      #  run: sudo apt-get install opam && git clone https://github.com/facebook/infer.git && cd infer && ./build-infer.sh -y clang && sudo make install && cd ..
+      - name: install fbinfer
+        run: VERSION=1.1.0; curl -sSL "https://github.com/facebook/infer/releases/download/v$VERSION/infer-linux64-v$VERSION.tar.xz" | sudo tar -C /opt -xJ && sudo ln -s "/opt/infer-linux64-v$VERSION/bin/infer" /usr/local/bin/infer
         
-      #- name: run with fbinfer
-      #  run: mkdir infer_build && cd infer_build && infer run -- make test
+      - name: run with fbinfer
+        run: mkdir infer_build && cd infer_build && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. && cd .. && infer run --compilation-database build/compile_commands.json
         
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
