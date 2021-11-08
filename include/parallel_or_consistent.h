@@ -1,5 +1,5 @@
-#ifndef INCLUDE_FUNCTIONS_H_
-#define INCLUDE_FUNCTIONS_H_
+#ifndef INCLUDE_PARALLEL_OR_CONSISTENT_H_
+#define INCLUDE_PARALLEL_OR_CONSISTENT_H_
 
 #define FILE_ERROR 124
 #define MEMORY_ERROR 123
@@ -14,4 +14,4 @@ typedef struct {
 
 int init_before_threading(char *file_data, long size);
 
-#endif  // INCLUDE_FUNCTIONS_H_
+#endif  // INCLUDE_PARALLEL_OR_CONSISTENT_H_
