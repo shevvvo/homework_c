@@ -66,10 +66,10 @@ enable_testing()
 
 add_test(NAME test_input
         COMMAND test_input
-        WORKING_DIRECTORY tests/data)
+        WORKING_DIRECTORY ../tests/data/)
 add_test(NAME test_static
          COMMAND test_static
-         WORKING_DIRECTORY tests/data)
+         WORKING_DIRECTORY ../tests/data/)
 add_test(NAME test_dynamic
          COMMAND test_dynamic
-         WORKING_DIRECTORY tests/data)
+         WORKING_DIRECTORY ../tests/data/)
