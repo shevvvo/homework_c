@@ -47,7 +47,7 @@ jobs:
         run: sudo apt install clang-tools
         
       - name: data generate
-        run: cd data && python3 data.py && cd ..
+        run: cd tests/data && python3 data.py && cd ../..
         
       - name: run tests with address sanitizer
         run: mkdir add_build && cd add_build && cmake -Daddress=ON .. && make && make test

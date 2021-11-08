@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "functions.h"
+#include "parallel_or_consistent.h"
 
-int algorithm_for_massive(void *arg) {
+int consistent(void *arg) {
   file_data *mass = (file_data *)arg;
   if (mass == NULL) {
     fprintf(stderr, "Memory error");
@@ -36,7 +36,7 @@ int algorithm_for_massive(void *arg) {
   }
 }
 
-int pre_working_initialize(char *file_mass, long size) {
+int init_before_threading(char *file_mass, long size) {
   if (size == 0) {
     fprintf(stderr, "Size of file is 0\n");
     return FILE_ERROR;
@@ -52,7 +52,7 @@ int pre_working_initialize(char *file_mass, long size) {
   }
   main_data->data = file_mass;
   main_data->end = size;
-  int res = algorithm_for_massive(main_data);
+  int res = consistent(main_data);
   free(main_data);
   return res;
 }

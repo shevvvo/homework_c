@@ -32,11 +32,11 @@ target_include_directories(input PUBLIC include)
 add_executable(test_input tests/input_test.cpp)
 target_link_libraries(test_input GTest::gtest input gcov)
 
-add_library(dynamic SHARED src/dynamic.c)
+add_library(dynamic SHARED src/parallel.c)
 target_include_directories(dynamic PUBLIC include)
 target_link_libraries(dynamic PUBLIC input)
 
-add_library(static_work STATIC src/static.c)
+add_library(static_work STATIC src/consistent.c)
 target_include_directories(static_work PUBLIC include)
 target_link_libraries(static_work PUBLIC input)
 
@@ -66,10 +66,10 @@ enable_testing()
 
 add_test(NAME test_input
         COMMAND test_input
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+        WORKING_DIRECTORY tests/data)
 add_test(NAME test_static
          COMMAND test_static
-         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+         WORKING_DIRECTORY tests/data)
 add_test(NAME test_dynamic
          COMMAND test_dynamic
-         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data)
+         WORKING_DIRECTORY tests/data)

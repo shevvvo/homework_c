@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "functions.h"
+#include "parallel_or_consistent.h"
 #include "input.h"
 }
 

@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#include "functions.h"
+#include "parallel_or_consistent.h"
 #include "input.h"
 
 #define SUCCESS 0

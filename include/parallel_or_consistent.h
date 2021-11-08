@@ -12,6 +12,6 @@ typedef struct {
   char *data;
 } file_data;
 
-int pre_working_initialize(char *file_data, long size);
+int init_before_threading(char *file_data, long size);
 
 #endif  // INCLUDE_FUNCTIONS_H_

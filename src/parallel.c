@@ -3,14 +3,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "functions.h"
+#include "parallel_or_consistent.h"
 #include "input.h"
 
 #define GOOD 1
 #define BAD -1
 #define NORMAL 0
 
-void *algorithm_for_massive(void *arg) {
+void *thread_func(void *arg) {
   file_data *data = (file_data *)arg;
   data->res = 0;
   long local_flag = 0;
@@ -41,7 +41,7 @@ void *algorithm_for_massive(void *arg) {
   return NULL;
 }
 
-int pre_working_initialize(char *file_mass, long size) {
+int init_before_threading(char *file_mass, long size) {
   long ncpus = sysconf(_SC_NPROCESSORS_CONF);
   if (ncpus == -1) {
     fprintf(stderr, "CPUs error\n");
@@ -122,7 +122,7 @@ int pre_working_initialize(char *file_mass, long size) {
       end += thread_data_size;
       end--;
     }
-    if (pthread_create(&(threads[i]), NULL, algorithm_for_massive,
+    if (pthread_create(&(threads[i]), NULL, thread_func,
                        &data_for_thread[i]) != 0) {
       for (long j = 0; j < ncpus; ++j) {
         free(data_for_thread[j].data);
