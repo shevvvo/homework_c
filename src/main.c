@@ -26,7 +26,7 @@ int main(int argc, const char **argv) {
     return FAILURE;
   }
   clock_gettime(CLOCK_MONOTONIC, &start);
-  int res = pre_working_initialize(file_mass, size);
+  int res = init_before_threading(file_mass, size);
   if (res == 1) {
     printf("Good\n");
   } else if (res == 0) {
