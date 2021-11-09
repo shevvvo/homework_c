@@ -1,6 +1,5 @@
-#ifndef INCLUDE_PARALLEL_OR_CONSISTENT_H_
-#define INCLUDE_PARALLEL_OR_CONSISTENT_H_
-
+#ifndef INCLUDE_CLASSIFY_BY_DIGRAPHS_H_
+#define INCLUDE_CLASSIFY_BY_DIGRAPHS_H_
 #define FILE_ERROR 124
 #define MEMORY_ERROR 123
 #define CPU_ERROR 122
@@ -14,4 +13,4 @@ typedef struct {
 
 int classify_by_digraphs(char *file_data, long size);
 
-#endif  // INCLUDE_PARALLEL_OR_CONSISTENT_H_
+#endif  // INCLUDE_CLASSIFY_BY_DIGRAPHS_H_
