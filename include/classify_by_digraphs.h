@@ -12,6 +12,6 @@ typedef struct {
   char *data;
 } file_data;
 
-int init_before_threading(char *file_data, long size);
+int classify_by_digraphs(char *file_data, long size);
 
 #endif  // INCLUDE_PARALLEL_OR_CONSISTENT_H_

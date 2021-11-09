@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#include "parallel_or_consistent.h"
+#include "classify_by_digraphs.h"
 #include "input.h"
 
 #define SUCCESS 0
@@ -26,7 +26,7 @@ int main(int argc, const char **argv) {
     return FAILURE;
   }
   clock_gettime(CLOCK_MONOTONIC, &start);
-  int res = init_before_threading(file_mass, size);
+  int res = classify_by_digraphs(file_mass, size);
   if (res == 1) {
     printf("Good\n");
   } else if (res == 0) {

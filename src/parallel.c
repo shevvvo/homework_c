@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "parallel_or_consistent.h"
+#include "classify_by_digraphs.h"
 #include "input.h"
 
 #define GOOD 1
@@ -41,7 +41,7 @@ void *thread_func(void *arg) {
   return NULL;
 }
 
-int init_before_threading(char *file_mass, long size) {
+int classify_by_digraphs(char *file_mass, long size) {
   long ncpus = sysconf(_SC_NPROCESSORS_CONF);
   if (ncpus == -1) {
     fprintf(stderr, "CPUs error\n");

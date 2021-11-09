@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "parallel_or_consistent.h"
+#include "classify_by_digraphs.h"
 
 int consistent(void *arg) {
   file_data *mass = (file_data *)arg;
@@ -36,7 +36,7 @@ int consistent(void *arg) {
   }
 }
 
-int init_before_threading(char *file_mass, long size) {
+int classify_by_digraphs(char *file_mass, long size) {
   if (size == 0) {
     fprintf(stderr, "Size of file is 0\n");
     return FILE_ERROR;
